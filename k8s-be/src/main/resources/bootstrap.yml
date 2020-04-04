@@ -1,0 +1,8 @@
+spring: 
+  application:
+    name: k8s-be
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: event

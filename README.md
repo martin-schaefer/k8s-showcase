@@ -52,4 +52,33 @@ For logging we are gonna use ElasticSearch, fluentd and Kibana. We start by inst
 
 	kubectl apply -f elasticsearch.k8s.yml
 
+To verify that ElasticSearch is running, forward the Port 9200 as follows:
+
+	kubectl port-forward es-cluster-0 9200:9200 --namespace=k8s-logging
+	
+Then open http://localhost:9200 in your browser and you should see a reponse like:
+
+	{
+	  "name" : "es-cluster-0",
+	  "cluster_name" : "k8s-logs",
+	  "cluster_uuid" : "vDWoaedFQL2Xr3PEJjugHA",
+	  "version" : {
+	    "number" : "7.2.0",
+	    "build_flavor" : "default",
+	    "build_type" : "docker",
+	    "build_hash" : "508c38a",
+	    "build_date" : "2019-06-20T15:54:18.811730Z",
+	    "build_snapshot" : false,
+	    "lucene_version" : "8.0.0",
+	    "minimum_wire_compatibility_version" : "6.8.0",
+	    "minimum_index_compatibility_version" : "6.0.0-beta1"
+	  },
+	  "tagline" : "You Know, for Search"
+	}
+	
+Now lets install fluentd. Execute:	
+
+	kubectl apply -f fluentd.k8s.yml
+	
+	
 	

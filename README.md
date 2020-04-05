@@ -38,7 +38,7 @@ You will get a response like:
 
 	192.168.99.104
 
-Write this IP address down, we will need it later to access the apps running inside the cluster
+Keep this IP address in mind. We will need it later to access the apps running inside the cluster.
 
 ### Install the Spring Boot Apps
 

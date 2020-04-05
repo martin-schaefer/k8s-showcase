@@ -56,7 +56,7 @@ To verify that ElasticSearch is running, forward the Port 9200 as follows:
 
 	kubectl port-forward es-cluster-0 9200:9200 --namespace=k8s-logging
 	
-Then open http://localhost:9200 in your browser and you should see a reponse like:
+Then open <http://localhost:9200/_cluster/state?pretty> in your browser and you should see a response like:
 
 	{
 	  "name" : "es-cluster-0",
@@ -80,5 +80,8 @@ Now lets install fluentd. Execute:
 
 	kubectl apply -f fluentd.k8s.yml
 	
-	
+To complete the logging stack install Kibana:
+
+	kubectl apply -f kibana.k8s.yml
+
 	

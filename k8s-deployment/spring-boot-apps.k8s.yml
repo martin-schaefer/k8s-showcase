@@ -68,7 +68,7 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 30070    
+    nodePort: 30001    
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -91,6 +91,14 @@ spec:
         image: gcr.io/handy-zephyr-272321/k8s-bff:latest
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 80
+          timeoutSeconds: 5
+          periodSeconds: 30
+          successThreshold: 1
+          failureThreshold: 1        
 ---
 apiVersion: v1
 kind: Service
@@ -104,7 +112,7 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 30080    
+    nodePort: 30002    
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -127,6 +135,14 @@ spec:
         image: gcr.io/handy-zephyr-272321/k8s-sba:latest
         ports:
         - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 80
+          timeoutSeconds: 5
+          periodSeconds: 30
+          successThreshold: 1
+          failureThreshold: 1        
 ---
 apiVersion: v1
 kind: Service
@@ -140,4 +156,4 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 30090    
+    nodePort: 30003

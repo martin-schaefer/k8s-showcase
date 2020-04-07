@@ -41,6 +41,10 @@ spec:
       labels:
         app: k8s-be
         fluentd-log-format: spring-boot-json
+      annotations:
+           prometheus.io/scrape: 'true'
+           prometheus.io/path: '/actuator/prometheus'
+           prometheus.io/port: '80'        
     spec:
       containers:
       - name: k8s-be-container
@@ -85,6 +89,10 @@ spec:
       labels:
         app: k8s-bff
         fluentd-log-format: spring-boot-json
+      annotations:
+           prometheus.io/scrape: 'true'
+           prometheus.io/path: '/actuator/prometheus'
+           prometheus.io/port: '80'        
     spec:
       containers:
       - name: k8s-bff-container
@@ -129,6 +137,10 @@ spec:
       labels:
         app: k8s-sba
         fluentd-log-format: spring-boot-json
+      annotations:
+           prometheus.io/scrape: 'true'
+           prometheus.io/path: '/actuator/prometheus'
+           prometheus.io/port: '80'        
     spec:
       containers:
       - name: k8s-sba-container

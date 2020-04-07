@@ -172,6 +172,8 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
+          
+          
 ---
 apiVersion: apps/v1
 kind: Deployment

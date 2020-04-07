@@ -7,6 +7,5 @@ management:
         include: "*"
   endpoint:
     health:
-      show-details: ALWAYS
-k8s-be:
-  message: FromEmbedded  
+      show-details: ALWAYSk8s-be:
+  message: "Message from embedded application.yml"

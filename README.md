@@ -38,50 +38,25 @@ You will get a response like:
 
 	192.168.99.104
 
-Keep this IP address in mind. We will need it later to access the apps running inside the cluster.
+Keep this IP address in mind or - for your own convenience - add it as host name `k8s-showcase` to `C:\Windows\System32\drivers\etc\hosts` (You need admin permission to do this). You will need it later to access the apps running inside the cluster.
+ 
+### Deploy the full Stack
 
-### Install the Spring Boot Apps
+You can install everything at once. Navigate to the top level directory of the Git project and execute:
 
-Now lets install the Spring Boot apps. Execute:
+	kubectl apply -f k8s-deployment
 
-	kubectl apply -f spring-boot-apps.k8s.yml
-	
-### Install the Logging Stack
+This will apply all deployment files (*.k8s.yml) in the 'k8s-deployment' directory to your minikube cluster.
 
-For logging we are gonna use ElasticSearch, fluentd and Kibana. We start by installing ElasticSearch. Execute:	
+After a few minutes the cluster should have started all pods. You can now visit the installed apps by using the following links:
 
-	kubectl apply -f elasticsearch.k8s.yml
-
-To verify that ElasticSearch is running, forward the Port 9200 as follows:
-
-	kubectl port-forward es-cluster-0 9200:9200 --namespace=k8s-logging
-	
-Then open <http://localhost:9200/_cluster/state?pretty> in your browser and you should see a response like:
-
-	{
-	  "name" : "es-cluster-0",
-	  "cluster_name" : "k8s-logs",
-	  "cluster_uuid" : "vDWoaedFQL2Xr3PEJjugHA",
-	  "version" : {
-	    "number" : "7.2.0",
-	    "build_flavor" : "default",
-	    "build_type" : "docker",
-	    "build_hash" : "508c38a",
-	    "build_date" : "2019-06-20T15:54:18.811730Z",
-	    "build_snapshot" : false,
-	    "lucene_version" : "8.0.0",
-	    "minimum_wire_compatibility_version" : "6.8.0",
-	    "minimum_index_compatibility_version" : "6.0.0-beta1"
-	  },
-	  "tagline" : "You Know, for Search"
-	}
-	
-Now lets install fluentd. Execute:	
-
-	kubectl apply -f fluentd.k8s.yml
-	
-To complete the logging stack install Kibana:
-
-	kubectl apply -f kibana.k8s.yml
+| URL                                  | Description                                                                                             |
+|--------------------------------------|---------------------------------------------------------------------------------------------------------|
+| <http://k8s-showcase:30001?name=Max> | Request to the backend (k8s-be). This will return a simmple message. It will also generate log message  |
+| <http://k8s-showcase:30002?name=Max> | Request to the backend-for-frontend (k8s-bff). This will query the backend for a message and return it. |
+| <http://k8s-showcase:30003>          | Opens the Spring Boot Admin UI                                                                          |
+| <http://k8s-showcase:30004>          | Opens the Kibana UI                                                                                     |
+| <http://k8s-showcase:30005>          | Opens the Prometheus Admin UI                                                                           |
+| <http://k8s-showcase:30006>          | Opens the Grafana UI (Use admin/admin for first login)                                                  |
 
 	

@@ -1,6 +1,8 @@
 server:
   port: 80
 management:
+  server:
+    port: 8010
   endpoints:
     web:
       exposure:

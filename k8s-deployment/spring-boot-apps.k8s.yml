@@ -44,17 +44,20 @@ spec:
       annotations:
            prometheus.io/scrape: 'true'
            prometheus.io/path: '/actuator/prometheus'
-           prometheus.io/port: '80'        
+           prometheus.io/port: '8010'        
     spec:
       containers:
       - name: k8s-be-container
         image: gcr.io/handy-zephyr-272321/k8s-be:latest
         ports:
-        - containerPort: 80
+        - name: service-port
+          containerPort: 80
+        - name: management-port
+          containerPort: 8010
         readinessProbe:
           httpGet:
             path: /actuator/health
-            port: 80
+            port: 8010
           timeoutSeconds: 5
           periodSeconds: 30
           successThreshold: 1
@@ -72,7 +75,21 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 30001    
+    nodePort: 30001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-be-management
+  namespace: k8s-spring-boot-apps
+  labels:
+    sba-monitored: "true"  
+spec:
+  selector:
+    app: k8s-be
+  ports:
+  - port: 8010
+    targetPort: 8010
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -92,17 +109,20 @@ spec:
       annotations:
            prometheus.io/scrape: 'true'
            prometheus.io/path: '/actuator/prometheus'
-           prometheus.io/port: '80'        
+           prometheus.io/port: '8010'        
     spec:
       containers:
       - name: k8s-bff-container
         image: gcr.io/handy-zephyr-272321/k8s-bff:latest
         ports:
-        - containerPort: 80
+        - name: service-port
+          containerPort: 80
+        - name: management-port
+          containerPort: 8010
         readinessProbe:
           httpGet:
             path: /actuator/health
-            port: 80
+            port: 8010
           timeoutSeconds: 5
           periodSeconds: 30
           successThreshold: 1
@@ -122,6 +142,35 @@ spec:
     targetPort: 80
     nodePort: 30002    
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-bff-management
+  namespace: k8s-spring-boot-apps
+  labels:
+    sba-monitored: "true"  
+spec:
+  selector:
+    app: k8s-bff
+  ports:
+  - port: 8010
+    targetPort: 8010
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: k8s-sba
+  namespace: k8s-spring-boot-apps  
+data:
+  application.yml: |-
+    spring:
+     cloud:
+      kubernetes:
+        discovery:
+          all-namespaces: true
+          service-labels:
+            sba-monitored: true
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -140,17 +189,20 @@ spec:
       annotations:
            prometheus.io/scrape: 'true'
            prometheus.io/path: '/actuator/prometheus'
-           prometheus.io/port: '80'        
+           prometheus.io/port: '8010'        
     spec:
       containers:
       - name: k8s-sba-container
         image: gcr.io/handy-zephyr-272321/k8s-sba:latest
-        ports:
-        - containerPort: 80
+        ports:        
+        - name: service-port
+          containerPort: 80
+        - name: management-port
+          containerPort: 8010
         readinessProbe:
           httpGet:
             path: /actuator/health
-            port: 80
+            port: 8010
           timeoutSeconds: 5
           periodSeconds: 30
           successThreshold: 1
@@ -169,3 +221,17 @@ spec:
   - port: 80
     targetPort: 80
     nodePort: 30003
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8s-sba-management
+  namespace: k8s-spring-boot-apps
+  labels:
+    sba-monitored: "true"  
+spec:
+  selector:
+    app: k8s-sba
+  ports:
+  - port: 8010
+    targetPort: 8010

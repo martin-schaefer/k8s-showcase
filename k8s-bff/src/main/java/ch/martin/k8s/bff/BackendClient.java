@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "k8s-be", url = "http://k8s-be")
 public interface BackendClient {
 
-	@GetMapping("/greeting")
+	@GetMapping("/")
 	GreetingDto getGreeting(@RequestParam("name") String name);
 
 }

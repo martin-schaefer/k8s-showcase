@@ -21,7 +21,7 @@ public class GreetingController {
 		this.appName = appName;
 	}
 
-	@GetMapping("/greeting")
+	@GetMapping("/")
 	public GreetingDto getGreeting(@RequestParam("name") String name) {
 		String message = "Received from backend: " + backendClient.getGreeting(name).getMessage();
 		log.info("{} will return: {}", appName, message);

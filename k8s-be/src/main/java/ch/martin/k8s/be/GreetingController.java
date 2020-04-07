@@ -26,7 +26,7 @@ public class GreetingController {
 		this.message = message;
 	}
 
-	@GetMapping("/greeting")
+	@GetMapping("/")
 	public GreetingDto getGreeting(@RequestParam("name") String name) {
 		String returnedMessage = message + " to " + name + " from the K8S backend! Time: " + LocalDateTime.now();
 		log.info("{} will return message: {}", appName, message);

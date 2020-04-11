@@ -74,7 +74,6 @@ spec:
     app: k8s-be
   ports:
   - port: 80
-    targetPort: 80
     nodePort: 30001
 ---
 apiVersion: v1
@@ -89,7 +88,6 @@ spec:
     app: k8s-be
   ports:
   - port: 8010
-    targetPort: 8010
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -139,7 +137,6 @@ spec:
     app: k8s-bff
   ports:
   - port: 80
-    targetPort: 80
     nodePort: 30002    
 ---
 apiVersion: v1
@@ -154,7 +151,6 @@ spec:
     app: k8s-bff
   ports:
   - port: 8010
-    targetPort: 8010
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -219,7 +215,6 @@ spec:
     app: k8s-sba
   ports:
   - port: 80
-    targetPort: 80
     nodePort: 30003
 ---
 apiVersion: v1
@@ -234,4 +229,3 @@ spec:
     app: k8s-sba
   ports:
   - port: 8010
-    targetPort: 8010

@@ -99,6 +99,8 @@ spec:
             value: "9200"
           - name: FLUENT_ELASTICSEARCH_SCHEME
             value: "http"
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX
+            value: "fluentd"
           - name: FLUENTD_SYSTEMD_CONF
             value: disable
         resources:

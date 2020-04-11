@@ -53,6 +53,4 @@ spec:
     app: kibana
   ports:
   - port: 5601
-    targetPort: 5601
-    nodePort: 30004    
-        
+    nodePort: 30004

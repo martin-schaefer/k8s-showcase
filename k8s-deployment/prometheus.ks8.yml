@@ -172,25 +172,23 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
-          
-          
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus-deployment
+  name: prometheus
   namespace: k8s-monitoring
   labels:
-    app: prometheus-server
+    app: prometheus
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus-server
+      app: prometheus
   template:
     metadata:
       labels:
-        app: prometheus-server
+        app: prometheus
     spec:
       containers:
         - name: prometheus
@@ -217,16 +215,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus-service
+  name: prometheus
   namespace: k8s-monitoring
   annotations:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '9090'  
 spec:
   selector: 
-    app: prometheus-server
+    app: prometheus
   type: NodePort  
   ports:
     - port: 9090
-      targetPort: 9090 
       nodePort: 30005

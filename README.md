@@ -46,7 +46,42 @@ Now here comes the magic of Kubernetes: You can install the full service stack a
 
 	kubectl apply -f k8s-deployment
 
-This will apply all deployment files (*.k8s.yml) in the `k8s-deployment` directory on your minikube cluster.
+This will apply all deployment files (*.k8s.yml) in the `k8s-deployment` directory on your minikube cluster. You should see the following output:
+
+	namespace/k8s-spring-boot-apps created
+	namespace/k8s-logging created
+	namespace/k8s-monitoring created
+	persistentvolume/pv0001 created
+	service/elasticsearch created
+	statefulset.apps/es-cluster created
+	serviceaccount/fluentd created
+	clusterrole.rbac.authorization.k8s.io/fluentd created
+	clusterrolebinding.rbac.authorization.k8s.io/fluentd created
+	configmap/fluentd-config created
+	daemonset.apps/fluentd created
+	persistentvolumeclaim/grafana-storage created
+	deployment.apps/grafana created
+	service/grafana created
+	service/kibana created
+	deployment.apps/kibana created
+	service/kibana configured
+	clusterrole.rbac.authorization.k8s.io/prometheus created
+	clusterrolebinding.rbac.authorization.k8s.io/prometheus created
+	configmap/prometheus-server-conf created
+	deployment.apps/prometheus created
+	service/prometheus created
+	clusterrolebinding.rbac.authorization.k8s.io/admin-default created
+	configmap/k8s-be created
+	deployment.apps/k8s-be created
+	service/k8s-be created
+	service/k8s-be-management created
+	deployment.apps/k8s-bff created
+	service/k8s-bff created
+	service/k8s-bff-management created
+	configmap/k8s-sba created
+	deployment.apps/k8s-sba created
+	service/k8s-sba created
+	service/k8s-sba-management created
 
 ### Verify Deployment
 

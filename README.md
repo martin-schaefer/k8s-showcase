@@ -7,8 +7,8 @@ This showcase highlights some key concepts for deploying Spring Boot application
 *   Dynamic configuration for Spring Boot with ConfigMap.
 *   Readiness/Liveness Probes backed by Spring Boot health actuator.
 *	Service lookup with Spring Boot's Feign Client and Kubernetes service object.
-*	Service discovery with Spring Boot's discovery client
-*   Monitoring of Spring Boot applications with [Spring Boot Admin](https://github.com/codecentric/spring-boot-admin)
+*	Service discovery with Spring Boot's discovery client.
+*   Monitoring of Spring Boot applications with [Spring Boot Admin](https://github.com/codecentric/spring-boot-admin).
 *	Centralized and structured logging with a JSON logback appender.
 *   Metrics scraping & analysis backed by Spring Boot's [Micrometer/Prometheus](https://docs.spring.io/spring-metrics/docs/current/public/prometheus) implementation.
 
@@ -122,4 +122,13 @@ The Spring Boot Admin application is used to gather build, configuration and hea
 
 ![Spring Boot Admin](screenshots/sba.png "Spring Boot backend-for-frontend") 
 
+#### Kibana
+
+Kibana is a powerful tool to analyze data provided by ElasticSearch. As first step you must make the log index available for searching: Select `Discover` from the menu. Then create an index pattern with `fluentd-*` and select `@timestamp` as time field. Now you can search through the logs. Enter `kubernetes.labels.app: k8s-be AND level:ERROR` as filter and click Refresh. You should see the error log entries created by the Spring Boot app `k8s-be`.
+
+![Kibana Filter](screenshots/kibana_filter.png "Kibana Filter") 
+
+The log messages produced by the Spring Boot apps are written as JSON to stdout. This is the most efficient way to forward it to the fluentd log daemon, because there is no further parsing required. Additionally, log messages with multiple lines (like the Java stacktrace shown below) do not impose any problems as it might happen with unstructured text output.
+
+![Spring Boot Log Entry Details](screenshots/kibana_log.png "Spring Boot Log Entry Details") 
  	

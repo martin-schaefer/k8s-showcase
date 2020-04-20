@@ -39,15 +39,15 @@ You should see `* k8s-showcase` as confirmation.
 
 The Kubernetes Dashboard is very useful when it comes to to track and monitor what is happening your cluster. Open a new command window or shell and start the Kubernetes Dashbord with `minikube dashboard`. This will open your Browser showing the inital Dashboard screen.
 
-Next check the IP address which is assigned to your cluster with `minikube ip`. You will get a response like `192.168.99.104'`. Keep this IP address in mind or even better add it as host name `k8s-showcase` to `C:\Windows\System32\drivers\etc\hosts` (You need admin permission to do this). You will need it later to access the apps running inside the cluster.
+Next check the IP address which is assigned to your cluster with `minikube ip`. You will get a response like `192.168.99.104`. Keep this IP address in mind or even better add it as host name `k8s-showcase` to `C:\Windows\System32\drivers\etc\hosts` (You need admin permission to do this). You will need it later to access the apps running inside the cluster.
  
-### Deploy the Service Stack
+### Deploy the Application Stack
 
-Now here comes the magic of Kubernetes: You can install the full service stack at once. Navigate to the top level directory of the Git project and execute:
+You can install the full application stack at once. Navigate to the top level directory of the Git project and execute:
 
 	kubectl apply -f k8s-deployment
 
-This will apply all deployment files (*.k8s.yml) in the `k8s-deployment` directory on your minikube cluster. You should see the following output:
+This will apply all deployment files (*.k8s.yml) in the `k8s-deployment` directory on your Minikube cluster. You should see the following output:
 
 	namespace/k8s-spring-boot-apps created
 	namespace/k8s-logging created
@@ -86,11 +86,11 @@ This will apply all deployment files (*.k8s.yml) in the `k8s-deployment` directo
 
 ### Verify Deployment
 
-After a few minutes the cluster should have started all pods. Check the dashboard if everything is green:
+After a few minutes the cluster should have started all pods. Check the dashboard that everything is green.
 
 ![Kubernetes Dashboard](screenshots/dashboard.png "Kubernetes Dashboard") 
 
-You can now visit the installed apps by using the following links:
+You can now visit the installed apps by using the following links: (The hostname `k8s-showcase` should point to your cluster ip address)
 
 | URL                                  | Description                                                                                             |
 |--------------------------------------|---------------------------------------------------------------------------------------------------------|

@@ -1,18 +1,19 @@
 # k8s-showcase
 
-This showcase highlights some key concepts for deploying Spring Boot applications to a Kubernetes cluster:
+This showcase highlights the following key concepts for deploying Spring Boot applications to a Kubernetes cluster:
 
-*   Creating docker images for the Spring Boot applications using the [JIB Maven plugin](https://github.com/GoogleContainerTools/jib) 
+*   Creating docker images for Spring Boot applications using the [Jib Maven plugin](https://github.com/GoogleContainerTools/jib) 
 *   Integration of Spring Boot with Kubernetes using [Spring Cloud Kubernetes](https://spring.io/projects/spring-cloud-kubernetes) 
-*   Dynamic configuration for Spring Boot with ConfigMap.
+*   Dynamic configuration for Spring Boot with ConfigMaps.
 *   Readiness/Liveness Probes backed by Spring Boot health actuator.
-*	Service lookup with Spring Boot's Feign Client and Kubernetes service object.
+*	Service lookup with Spring Boot's Feign client and Kubernetes service objects.
 *	Service discovery with Spring Boot's discovery client.
 *   Monitoring of Spring Boot applications with [Spring Boot Admin](https://github.com/codecentric/spring-boot-admin).
-*	Centralized and structured logging with a JSON logback appender.
-*   Metrics scraping & analysis backed by Spring Boot's [Micrometer/Prometheus](https://docs.spring.io/spring-metrics/docs/current/public/prometheus) implementation.
+*	Centralized and structured logging for Spring Boot apps using a JSON logback appender.
+*   Metrics scraping backed by Spring Boot's [Micrometer/Prometheus](https://docs.spring.io/spring-metrics/docs/current/public/prometheus) implementation.
+*	How to use visualization tools to analyze logs and metrics.
 
-The logging stack will consist of ElasticSearch, Fluentd and Kibana. For metrics and analysis we will install Prometheus and Grafana.
+After completing the installation described below, you will control a complete application stack with two Spring Boot applications, a logging stack based on [fluentd](https://www.fluentd.org)/[ElasticSearch](https://www.elastic.co)/[Kibana](https://www.elastic.co), a monitoring stack with [Prometheus](https://prometheus.io)/[Grafana](https://grafana.com) and a [Spring Boot Admin](https://github.com/codecentric/spring-boot-admin) application.
 
 ## Steps to install
 
@@ -132,3 +133,19 @@ The log messages produced by the Spring Boot apps are written as JSON to stdout.
 
 ![Spring Boot Log Entry Details](screenshots/kibana_log.png "Spring Boot Log Entry Details") 
  	
+#### Prometheus
+
+Prometheus is a database for storing multi dimensional metrics based on a time line. It is used to scrape the metrics provided by the Spring Boot app's actuators and also by the Kubernetes system components. Open the Prometheus UI and select `targets`. In the `Kubernetes Pods` section you should see that Prometheus has detected the Spring Boot apps as scraping targets. This happens automatically because their Kubernetes service object is annotated with appropriate `prometheus.io/*` values.  
+
+![Prometheus Targets](screenshots/prometheus.png "Prometheus Targets") 
+  
+#### Grafana
+
+With Grafana you can analyze and visualize the data provided by Prometheus and ElasticSearch. First define a datasource for Prometheus using `http://prometheus:9090`. Now create a dashboard and add chart with the PromQL expression `rate(http_server_requests_seconds_count{app="k8s-be"}[1m])`. This will give you visualization of HTTP server requests per second for the Spring Boot app `k8s-be`.  
+
+![Grafana/Prometheus](screenshots/grafana_prometheus.png "Grafana/Prometheus")
+ 
+It is also possible to use ElasticSearch as data source: Create a data source using `http://elasticsearch.k8s-logging.svc.cluster.local:9200`, index-name `fluentd-*`, pattern `no-pattern` and version `7.0+`. Then add a table to your dashboard and you will see the log messages stored by fluentd to ElasticSearch.
+ 
+![Grafana/ElasticSearch](screenshots/grafana_elasticsearch.png "Grafana/ElasticSearch")
+

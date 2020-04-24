@@ -6,13 +6,29 @@ variable "app_name" {
   type = string
 }
 
+variable "app_namespace" {
+  type = string
+}
+
 variable "node_port" {
   type = number
+}
+
+resource "kubernetes_config_map" "spring-boot-app-config-map" {
+  metadata {
+    name = var.app_name
+    namespace = var.app_namespace
+  }
+
+  data = {
+    "application.yml" = "${file("./app-config/${var.app_name}.yml")}"
+  }
 }
 
 resource "kubernetes_deployment" "spring-boot-app-deployment" {
   metadata {
     name = var.app_name
+    namespace = var.app_namespace
   }
   spec {
     replicas = 2
@@ -64,6 +80,7 @@ resource "kubernetes_deployment" "spring-boot-app-deployment" {
 resource "kubernetes_service" "spring-boot-app-service" {
   metadata {
     name = var.app_name
+    namespace = var.app_namespace
   }
   spec {
     selector = {
@@ -80,6 +97,7 @@ resource "kubernetes_service" "spring-boot-app-service" {
 resource "kubernetes_service" "spring-boot-app-management" {
   metadata {
     name = "${var.app_name}-management"
+    namespace = var.app_namespace
   }
   spec {
     selector = {

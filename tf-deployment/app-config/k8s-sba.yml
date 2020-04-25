@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    kubernetes:
+      discovery:
+        service-labels:
+          sba-monitored: true

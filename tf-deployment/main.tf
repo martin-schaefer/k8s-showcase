@@ -31,7 +31,7 @@ resource "kubernetes_role" "namespace-reader-role" {
   }
   rule {
     api_groups = ["", "extensions", "apps"]
-    resources = ["configmaps", "pods", "services", "endpoints", "secrets"]
+    resources = ["namespaces", "configmaps", "pods", "services", "endpoints", "secrets"]
     verbs = ["get", "list", "watch"]
   }
 }
@@ -50,6 +50,7 @@ resource "kubernetes_role_binding" "namespace-reader-bindig" {
   subject {
     kind      = "ServiceAccount"
     name      = "default"
+    namespace = var.app_namespace
     api_group = ""
   }
 }
@@ -59,6 +60,7 @@ module "k8s-be" {
   source = "./spring-boot-app"
   app_name = "k8s-be"
   app_namespace = var.app_namespace
+  app_replicas = 2
   node_port = 30001
 }
 
@@ -66,5 +68,13 @@ module "k8s-bff" {
   source = "./spring-boot-app"
   app_name = "k8s-bff"
   app_namespace = var.app_namespace
+  app_replicas = 2
   node_port = 30002
+}
+
+module "k8s-sba" {
+  source = "./spring-boot-app"
+  app_name = "k8s-sba"
+  app_namespace = var.app_namespace
+  node_port = 30003
 }

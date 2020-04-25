@@ -10,6 +10,11 @@ variable "app_namespace" {
   type = string
 }
 
+variable "app_replicas" {
+  type = number
+  default = 1
+}
+
 variable "node_port" {
   type = number
 }
@@ -31,7 +36,7 @@ resource "kubernetes_deployment" "spring-boot-app-deployment" {
     namespace = var.app_namespace
   }
   spec {
-    replicas = 2
+    replicas = var.app_replicas
     selector {
       match_labels = {
         app = var.app_name
@@ -99,6 +104,9 @@ resource "kubernetes_service" "spring-boot-app-management" {
   metadata {
     name = "${var.app_name}-management"
     namespace = var.app_namespace
+    labels = {
+      sba-monitored = "true"
+    }
   }
   spec {
     selector = {

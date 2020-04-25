@@ -87,23 +87,6 @@ resource "kubernetes_service" "spring-boot-app-service" {
   metadata {
     name = var.app_name
     namespace = var.app_namespace
-  }
-  spec {
-    selector = {
-      app = var.app_name
-    }
-    port {
-      port = 80
-      node_port = var.node_port
-    }
-    type = "NodePort"
-  }
-}
-
-resource "kubernetes_service" "spring-boot-app-management" {
-  metadata {
-    name = "${var.app_name}-management"
-    namespace = var.app_namespace
     labels = {
       sba-monitored = "true"
     }
@@ -113,7 +96,14 @@ resource "kubernetes_service" "spring-boot-app-management" {
       app = var.app_name
     }
     port {
+      name = "service"
+      port = 80
+      node_port = var.node_port
+    }
+    port {
+      name = "management"
       port = 8010
     }
+    type = "NodePort"
   }
 }

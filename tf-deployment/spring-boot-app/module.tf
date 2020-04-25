@@ -50,8 +50,9 @@ resource "kubernetes_deployment" "spring-boot-app-deployment" {
         }
       }
       spec {
+        automount_service_account_token = true
         container {
-          name  = "${var.app_name}container"
+          name  = "${var.app_name}-container"
           image = "gcr.io/handy-zephyr-272321/${var.app_name}:latest"
           port {
             name = "service-port"

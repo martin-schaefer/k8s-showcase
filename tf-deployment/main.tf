@@ -23,20 +23,34 @@ resource "kubernetes_namespace" "app-namespace" {
   }
 }
 
-# The default account in the application namespace must have read permissions
-resource "kubernetes_cluster_role_binding" "cluster-admin-binding" {
+# A reader role for the application namespace
+resource "kubernetes_role" "namespace-reader-role" {
   metadata {
-    name = "app-namespace-default-cluster-admin"
+    name = "namespace-reader"
+    namespace = var.app_namespace
+  }
+  rule {
+    api_groups = ["", "extensions", "apps"]
+    resources = ["configmaps", "pods", "services", "endpoints", "secrets"]
+    verbs = ["get", "list", "watch"]
+  }
+}
+
+# The default account in the application namespace has the reader role
+resource "kubernetes_role_binding" "namespace-reader-bindig" {
+  metadata {
+    name = "namespace-reader-binding"
+    namespace = var.app_namespace
   }
   role_ref {
-    kind      = "ClusterRole"
-    name      = "cluster-admin"
+    kind      = "Role"
+    name      = "namespace-reader"
     api_group = "rbac.authorization.k8s.io"
   }
   subject {
     kind      = "ServiceAccount"
     name      = "default"
-    namespace = var.app_namespace
+    api_group = ""
   }
 }
 

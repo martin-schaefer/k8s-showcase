@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: k8s-be-container
-        image: gcr.io/handy-zephyr-272321/k8s-be:latest
+        image: gcr.io/handy-zephyr-272321/k8s-be:1.0.1
         ports:
         - name: service
           containerPort: 80
@@ -110,7 +110,7 @@ spec:
     spec:
       containers:
       - name: k8s-bff-container
-        image: gcr.io/handy-zephyr-272321/k8s-bff:latest
+        image: gcr.io/handy-zephyr-272321/k8s-bff:1.0.0
         ports:
         - name: service
           containerPort: 80
@@ -180,7 +180,7 @@ spec:
     spec:
       containers:
       - name: k8s-sba-container
-        image: gcr.io/handy-zephyr-272321/k8s-sba:latest
+        image: gcr.io/handy-zephyr-272321/k8s-sba:1.0.0
         ports:
         - name: service
           containerPort: 80

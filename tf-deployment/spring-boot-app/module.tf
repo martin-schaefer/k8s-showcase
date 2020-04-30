@@ -6,6 +6,10 @@ variable "app_name" {
   type = string
 }
 
+variable "app_version" {
+  type = string
+}
+
 variable "app_namespace" {
   type = string
 }
@@ -46,6 +50,7 @@ resource "kubernetes_deployment" "spring-boot-app-deployment" {
       metadata {
         labels = {
           app = var.app_name
+          app_version = var.app_version
           fluentd-log-format = "spring-boot-json"
         }
         annotations = {
@@ -58,7 +63,7 @@ resource "kubernetes_deployment" "spring-boot-app-deployment" {
         automount_service_account_token = true
         container {
           name  = "${var.app_name}-container"
-          image = "gcr.io/handy-zephyr-272321/${var.app_name}:latest"
+          image = "gcr.io/handy-zephyr-272321/${var.app_name}:${var.app_version}"
           port {
             name = "service-port"
             container_port = 80

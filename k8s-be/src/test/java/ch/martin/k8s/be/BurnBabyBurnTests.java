@@ -1,4 +1,4 @@
-package ch.martin.k8s;
+package ch.martin.k8s.be;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

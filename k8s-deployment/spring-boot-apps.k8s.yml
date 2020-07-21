@@ -57,9 +57,9 @@ spec:
       - name: k8s-be-container
         image: gcr.io/handy-zephyr-272321/k8s-be:1.0.2
         ports:
-        - name: service
+        - name: http-service
           containerPort: 80
-        - name: management
+        - name: http-management
           containerPort: 8010
         readinessProbe:
           httpGet:
@@ -83,10 +83,9 @@ spec:
     app: k8s-be
   ports:
   - port: 80
-    name: service
-    nodePort: 30001
+    name: http-service
   - port: 8010
-    name: management
+    name: http-management
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -112,9 +111,9 @@ spec:
       - name: k8s-bff-container
         image: gcr.io/handy-zephyr-272321/k8s-bff:1.0.0
         ports:
-        - name: service
+        - name: http-service
           containerPort: 80
-        - name: management
+        - name: http-management
           containerPort: 8010
         readinessProbe:
           httpGet:
@@ -138,10 +137,10 @@ spec:
     app: k8s-bff
   ports:
   - port: 80
-    name: service
+    name: http-service
     nodePort: 30002
   - port: 8010
-    name: management
+    name: http-management
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -154,7 +153,7 @@ data:
      cloud:
       kubernetes:
         discovery:
-          primary-port-name: management
+          primary-port-name: http-management
           service-labels:
             sba-monitored: true
 ---
@@ -182,9 +181,9 @@ spec:
       - name: k8s-sba-container
         image: gcr.io/handy-zephyr-272321/k8s-sba:1.0.0
         ports:
-        - name: service
+        - name: http-service
           containerPort: 80
-        - name: management
+        - name: http-management
           containerPort: 8010
         readinessProbe:
           httpGet:
@@ -208,7 +207,7 @@ spec:
     app: k8s-sba
   ports:
   - port: 80
-    name: service
+    name: http-service
     nodePort: 30003
   - port: 8010
-    name: management
+    name: http-management

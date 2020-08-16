@@ -34,10 +34,22 @@ variable "version_k8s-sba" {
   type = string
 }
 
+variable "logging_namespace" {
+  type    = string
+  default = "k8s-logging"
+}
+
 # The application namespace
 resource "kubernetes_namespace" "app-namespace" {
   metadata {
     name = var.app_namespace
+  }
+}
+
+# The logging namespace
+resource "kubernetes_namespace" "logging-namespace" {
+  metadata {
+    name = var.logging_namespace
   }
 }
 
@@ -79,6 +91,10 @@ module "imago" {
   schedule  = "* * * * *"
 }
 
+module "elasticsearch" {
+  source          = "./elasticsearch"
+  namespace = var.logging_namespace
+}
 
 # The Spring Boot applications
 module "k8s-be" {
